@@ -1,0 +1,25 @@
+{
+  "name": "student-starter",
+  "dockerComposeFile": "../docker-compose.yml",
+  "service": "app",
+  "workspaceFolder": "/workspace",
+  "overrideCommand": true,
+  "remoteUser": "vscode",
+  "remoteEnv": {
+    "PYTHONPATH": "/workspace"
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-python.python",
+        "ms-python.vscode-pylance",
+        "ms-python.black-formatter",
+        "vue.volar",
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode",
+        "ckolkman.vscode-postgres"
+      ]
+    }
+  },
+  "postCreateCommand": "python -m pip install --upgrade pip"
+}

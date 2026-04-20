@@ -1,0 +1,30 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: .devcontainer/Dockerfile
+    volumes:
+      - ./:/workspace:cached
+    depends_on:
+      - db
+    ports:
+      - "8003:8000"
+      - "5173:5173"
+    command: sleep infinity
+    environment:
+      DATABASE_URL: postgresql://student:student@db:5432/student_db
+
+  db:
+    image: postgres:16
+    restart: unless-stopped
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: student
+      POSTGRES_PASSWORD: student
+      POSTGRES_DB: student_db
+    ports:
+      - "5432:5432"
+
+volumes:
+  pgdata:
