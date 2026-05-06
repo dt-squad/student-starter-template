@@ -1,7 +1,14 @@
-<script setup>
-import HelloWorld from './components/HelloWorld.vue'
+<script>
+import Greeting from './components/Greeting.vue'
+
+export default {
+  name: 'App',
+  components: {
+    Greeting,
+  },
+}
 </script>
 
 <template>
-  <HelloWorld />
+  <Greeting />
 </template>

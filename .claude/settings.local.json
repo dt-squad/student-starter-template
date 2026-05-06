@@ -1,0 +1,14 @@
+{
+  "enabledMcpjsonServers": [
+    "backlog",
+    "json",
+    "code_explorer"
+  ],
+  "permissions": {
+    "allow": [
+      "mcp__backlog",
+      "mcp__json",
+      "mcp__code_explorer"
+    ]
+  }
+}

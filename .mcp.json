@@ -1,0 +1,16 @@
+{
+  "mcpServers": {
+    "backlog": {
+      "command": "/opt/mcp-venv/bin/python",
+      "args": ["/opt/mcp/backlog/backlog_server.py"]
+    },
+    "json": {
+      "command": "/opt/mcp-venv/bin/python",
+      "args": ["/opt/mcp/json_interrogator/json_interrogator_server.py"]
+    },
+    "code_explorer": {
+      "command": "/opt/mcp-venv/bin/python",
+      "args": ["/opt/mcp/code_explorer/code_explorer_server.py"]
+    }
+  }
+}
