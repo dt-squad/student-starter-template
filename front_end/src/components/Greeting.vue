@@ -3,9 +3,14 @@
   <div class="greeting">
     <h2>Hello, {{ name }}!</h2>
     <p>You've clicked the button {{ clickCount }} time(s).</p>
-
+    <div>
+      <p>Name: {{ personData.name }}</p>
+      <p>Age: {{ personData.age }}</p>
+      <p>Email: {{ personData.email }}</p>
+    </div>
     <!-- @click is a Vue shortcut for v-on:click. It calls a method when clicked. -->
     <button @click="sayHi">Click me</button>
+    <button @click="get_data_from_back_end">Click me 2</button>
 
     <!-- v-model creates a two-way binding between the input and the `name` data. -->
     <input v-model="name" placeholder="Type your name" />
@@ -25,6 +30,11 @@ export default {
     return {
       name: 'world',
       clickCount: 0,
+      personData: {
+        name: '',
+        age: null,
+        email: ''
+      }
     }
   },
 
@@ -35,7 +45,26 @@ export default {
       this.clickCount++
       console.log(`Hi, ${this.name}!`)
     },
+    get_data_from_back_end() {
+        // Example of fetching data from a backend API
+        fetch('http://localhost:8003/data')
+          .then(response => response.json())
+          .then(data => {
+            console.log('Data from backend:', data)
+            // You can also update component data here if needed
+            this.personData = data
+          })
+          .catch(error => {
+            console.error('Error fetching data:', error)
+          })
+    }
   },
+  created() {
+    // This lifecycle hook runs when the component is created.
+    // You can use it to fetch initial data or set up things.
+    this.get_data_from_back_end() // Fetch data when the component is created
+    console.log('Greeting component created!')
+  }
 }
 </script>
 
