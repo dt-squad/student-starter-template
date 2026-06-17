@@ -1,2 +1,10 @@
 fastapi
 uvicorn[standard]
+alembic==1.14.0
+# Database + ORM + migrations
+sqlalchemy==2.0.36
+psycopg2-binary==2.9.10
+alembic==1.14.0
+pydantic-settings==2.7.0
+cryptography==46.0.7
+numpy==2.1.3
