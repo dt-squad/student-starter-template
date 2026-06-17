@@ -35,7 +35,7 @@ from .database import Base, SessionLocal, get_db_context
 class Role(Base):
     __tablename__ = "roles"
 
-    id = Column(Integer, primary_key=True, autoincrement=True)
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     name = Column(String(50), unique=True, nullable=False)
     level = Column(Integer, nullable=False)  # Higher = more permissions
 
