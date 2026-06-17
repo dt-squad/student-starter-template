@@ -38,7 +38,7 @@ class Role(Base):
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     name = Column(String(50), unique=True, nullable=False)
     level = Column(Integer, nullable=False)  # Higher = more permissions
-
+    created_timestamp = Column(DateTime, default=lambda: datetime.now(timezone.utc))
     users = relationship("User", back_populates="role")
 
     def __repr__(self):
