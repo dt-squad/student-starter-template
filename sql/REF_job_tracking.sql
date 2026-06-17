@@ -1,0 +1,5 @@
+CREATE TABLE jobs(
+   id INTEGER PRIMARY KEY,
+   job_number VARCHAR(50) NOT NULL UNIQUE
+);
+
