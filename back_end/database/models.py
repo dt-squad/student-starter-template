@@ -51,7 +51,7 @@ class Role(Base):
 # >>>>>>>>>> Complaints
     
 # Sets the options for each complaint stage as an enum into the database
-class ComplaintStage(enum.Enum):
+class ComplaintStages(enum.Enum):
     MEMBER_MP_ENQUIRY = 'Member_MP_Enquiry'
     STAGE_1 = 'Stage 1'
     STAGE_2 = 'Stage 2'
@@ -65,7 +65,8 @@ class Complaint(Base):
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     complaint_number = Column(String(20), unique=True)
 
-    stage = Column(Enum(ComplaintStage), default = ComplaintStage.MEMBER_MP_ENQUIRY)
+    # Added explicit name to avoid collision with table name
+    stage = Column(Enum(ComplaintStages, name="complaintstages_enum"), default=ComplaintStages.MEMBER_MP_ENQUIRY)
 
 # >>>>>>>>>> Jobs
 # Created table for jobs to be stored, with a foreign key to the PY Complaints table.
@@ -105,7 +106,7 @@ class Resource_Contact(Base):
     __tablename__ = "resource_contacts"
     id  = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     resource_id = Column(UUID(as_uuid=True), ForeignKey("resources.id"), nullable=False)
-    Name = Column(String(60), nullable=False)
+    name = Column(String(60), nullable=False)
     email = Column(String(100))
     phone = Column(String(15))
     role = Column(String(50))
@@ -117,7 +118,7 @@ class Resource_Trade(Base):
     trade = Column(String(50), nullable=False)
 
 # >>>>>>>>>> Scaffold
-class scaffold_stage(enum.Enum):
+class Scaffold_Stages(enum.Enum):
     REQUESTED = 'Requested'
     SENT_TO_COMMERCIAL = 'Sent to commercial'
     SENT_TO_RBK = 'Sent to RBK'
@@ -138,10 +139,11 @@ class Scaffold_Request(Base):
     id  = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4) 
     job_id = Column(UUID(as_uuid=True), ForeignKey("jobs.id"))
     use = Column(String(100))
-    status = Column(Enum(scaffold_stage), default=scaffold_stage.REQUESTED)
+    # Added explicit name to avoid collision with table name
+    status = Column(Enum(Scaffold_Stages, name="scaffold_stages_enum"), default=Scaffold_Stages.REQUESTED)
     resourse_id = Column(UUID(as_uuid=True), ForeignKey("resources.id"))
 
-class Scaffold_Elevation(enum.Enum):
+class Scaffold_Elevations(enum.Enum):
     FRONT = 'Front'
     LEFT = 'Left'
     RIGHT = 'Right'
@@ -152,7 +154,8 @@ class Scaffold_Elevation(Base):
 
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     scaffold_id = Column(UUID(as_uuid=True), ForeignKey("scaffold_requests.id"), nullable=False)
-    elevation = Column(Enum(Scaffold_Elevation), default=Scaffold_Elevation.FRONT)
+    # Added explicit name to avoid collision with table name
+    elevation = Column(Enum(Scaffold_Elevations, name="scaffold_elevations_enum"), default=Scaffold_Elevations.FRONT)
     height = Column(Integer)
     width = Column(Integer)
     chimney = Column(Boolean, default=False)
@@ -164,7 +167,7 @@ class Scaffold_Checklist_Item(Base):
     id = Column(UUID(as_uuid=False), primary_key=True, default=uuid.uuid4)
     check_item = Column(String(50))
 
-class Scaffold_Media_Type(enum.Enum):
+class Scaffold_Media_Types(enum.Enum):
     REQUEST = 'Request'               
     TG20 = 'TG20'                  
     HANDOVER_CERTIFICATE = 'Handover Certificate'
@@ -181,10 +184,12 @@ class Scaffold_Media(Base):
     document_name = Column(String(60), nullable=False)
     document = Column(LargeBinary, nullable=False)
     scaffold_checklist_item_id = Column(UUID(as_uuid=True), ForeignKey("scaffold_checklist_items.id"), nullable=False)
-    scaffold_media_type = Column(Enum(Scaffold_Media_Type), default=Scaffold_Media_Type.OTHER)
+    # Added explicit name to avoid collision with table name
+    scaffold_media_type = Column(Enum(Scaffold_Media_Types, name="scaffold_media_types_enum"), default=Scaffold_Media_Types.OTHER)
 
 """
 python3 -m back_end.scripts.run_migration create -m "Initial Migration"
 python3 -m back_end.scripts.run_migration upgrade
 python3 -m back_end.scripts.run_migration create -m "Adjusted the name of the complaints table as well as the FK on the Jobs table. Capitalized and Singularized class names"
+python3 -m back_end.scripts.run_migration create -m "Table & Enum naming conventions"
 """
