@@ -228,3 +228,5 @@ UPDATE job_stages_history
 SET date = '2020-08-01'
 WHERE job_stages_history_id = 1;
 
+ALTER TABLE py_complaints 
+RENAME TO complaints

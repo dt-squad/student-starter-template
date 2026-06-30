@@ -57,21 +57,19 @@ class ComplaintStage(enum.Enum):
     STAGE_2 = 'Stage 2'
     OMBUDSMAN = 'Ombudsman'
 
-# Creates the py_complaints table. PY added so I can diffrentiate from the tables created in SQL
-class PY_Complaints(Base):
+# Creates the complaints table. PY added so I can diffrentiate from the tables created in SQL
+class Complaint(Base):
     # Sets the table name 
-    __tablename__ = "py_complaints"
+    __tablename__ = "complaints"
 
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     complaint_number = Column(String(20), unique=True)
 
     stage = Column(Enum(ComplaintStage), default = ComplaintStage.MEMBER_MP_ENQUIRY)
-    address = Column(String(100))
-    postcode = Column(String(10))
 
 # >>>>>>>>>> Jobs
 # Created table for jobs to be stored, with a foreign key to the PY Complaints table.
-class Jobs(Base):
+class Job(Base):
     __tablename__ = "jobs"
 
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
@@ -80,9 +78,9 @@ class Jobs(Base):
     postcode = Column(String(10))
 
     # Foreign key connection to the complaints table
-    complaint_id = Column(UUID(as_uuid=True), ForeignKey("py_complaints.id"), nullable=True)
+    complaint_id = Column(UUID(as_uuid=True), ForeignKey("complaints.id"), nullable=True)
 
-class Job_Stages(Base):
+class Job_Stage(Base):
     __tablename__ = "job_stages"
 
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
@@ -97,24 +95,23 @@ class Job_Stages_History(Base):
     date = Column(DateTime, default=func.now(), nullable=False)
 
 # >>>>>>>>>> Resources
-class resource(Base):
-    __tablename__ = "resource"
+class Resource(Base):
+    __tablename__ = "resources"
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     name = Column(String(60), nullable=False)
     subcontractor = Column(Boolean, default=False)
 
-class resource_contact(Base):
-    __tablename__ = "resource_contact"
+class Resource_Contact(Base):
+    __tablename__ = "resource_contacts"
     id  = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    resource_id = Column(UUID(as_uuid=True), ForeignKey("resource.id"), nullable=False)
-    subcontractor = Column(Boolean)
+    resource_id = Column(UUID(as_uuid=True), ForeignKey("resources.id"), nullable=False)
     Name = Column(String(60), nullable=False)
     email = Column(String(100))
     phone = Column(String(15))
     role = Column(String(50))
     
-class resource_trade(Base):
-    __tablename__ = "resource_trade"
+class Resource_Trade(Base):
+    __tablename__ = "resource_trades"
 
     id  = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     trade = Column(String(50), nullable=False)
@@ -135,34 +132,34 @@ class scaffold_stage(enum.Enum):
     COMPLETED = "Completed"
 
 
-class Scaffold_Requests(Base):
+class Scaffold_Request(Base):
     __tablename__ = "scaffold_requests"
 
     id  = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4) 
     job_id = Column(UUID(as_uuid=True), ForeignKey("jobs.id"))
     use = Column(String(100))
     status = Column(Enum(scaffold_stage), default=scaffold_stage.REQUESTED)
-    resourse_id = Column(UUID(as_uuid=True), ForeignKey("resource.id"))
+    resourse_id = Column(UUID(as_uuid=True), ForeignKey("resources.id"))
 
-class scaffold_elevation(enum.Enum):
+class Scaffold_Elevation(enum.Enum):
     FRONT = 'Front'
     LEFT = 'Left'
     RIGHT = 'Right'
     REAR = 'Rear'
 
-class Scaffold_Elevations(Base):
+class Scaffold_Elevation(Base):
     __tablename__ = "scaffold_elevations"
 
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     scaffold_id = Column(UUID(as_uuid=True), ForeignKey("scaffold_requests.id"), nullable=False)
-    elevation = Column(Enum(scaffold_elevation), default=scaffold_elevation.FRONT)
+    elevation = Column(Enum(Scaffold_Elevation), default=Scaffold_Elevation.FRONT)
     height = Column(Integer)
     width = Column(Integer)
     chimney = Column(Boolean, default=False)
     notes = Column(String(250))    
 
 class Scaffold_Checklist_Item(Base):
-    __tablename__ = "scaffold_checklist_item"
+    __tablename__ = "scaffold_checklist_items"
 
     id = Column(UUID(as_uuid=False), primary_key=True, default=uuid.uuid4)
     check_item = Column(String(50))
@@ -183,10 +180,11 @@ class Scaffold_Media(Base):
     scaffold_id = Column(UUID(as_uuid=True), ForeignKey("scaffold_requests.id"), nullable=False)
     document_name = Column(String(60), nullable=False)
     document = Column(LargeBinary, nullable=False)
-    scaffold_checklist_item_id = Column(UUID(as_uuid=True), ForeignKey("scaffold_checklist_item.id"), nullable=False)
+    scaffold_checklist_item_id = Column(UUID(as_uuid=True), ForeignKey("scaffold_checklist_items.id"), nullable=False)
+    scaffold_media_type = Column(Enum(Scaffold_Media_Type), default=Scaffold_Media_Type.OTHER)
 
 """
 python3 -m back_end.scripts.run_migration create -m "Initial Migration"
 python3 -m back_end.scripts.run_migration upgrade
-
+python3 -m back_end.scripts.run_migration create -m "Adjusted the name of the complaints table as well as the FK on the Jobs table. Capitalized and Singularized class names"
 """
