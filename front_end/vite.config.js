@@ -9,7 +9,8 @@ export default defineConfig({
     port: 5173,
   },
   build: {
-    outDir: '../back_end/static',
+    outDir: '../back_end/app/api/front_end/templates',
+    assetsDir: "static",
     emptyOutDir: true,
   },
 })

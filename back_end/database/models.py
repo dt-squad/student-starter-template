@@ -42,7 +42,7 @@ class Role(Base):
     name = Column(String(50), unique=True, nullable=False)
     level = Column(Integer, nullable=False)  # Higher = more permissions
     created_timestamp = Column(DateTime, default=lambda: datetime.now(timezone.utc))
-    users = relationship("User", back_populates="role")
+    # users = relationship("User", back_populates="role")
 
     def __repr__(self):
         return f"<Role {self.name} (level={self.level})>"
@@ -87,6 +87,7 @@ class Job_Stage(Base):
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     title = Column(String(50))
     for_scaffold = Column(Boolean, default=False)
+
 
 class Job_Stages_History(Base):
     __tablename__ = "job_stages_history"
@@ -141,7 +142,7 @@ class Scaffold_Request(Base):
     use = Column(String(100))
     # Added explicit name to avoid collision with table name
     status = Column(Enum(Scaffold_Stages, name="scaffold_stages_enum"), default=Scaffold_Stages.REQUESTED)
-    resourse_id = Column(UUID(as_uuid=True), ForeignKey("resources.id"))
+    resource_id = Column(UUID(as_uuid=True), ForeignKey("resources.id"))
 
 class Scaffold_Elevations(enum.Enum):
     FRONT = 'Front'
@@ -154,7 +155,6 @@ class Scaffold_Elevation(Base):
 
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     scaffold_id = Column(UUID(as_uuid=True), ForeignKey("scaffold_requests.id"), nullable=False)
-    # Added explicit name to avoid collision with table name
     elevation = Column(Enum(Scaffold_Elevations, name="scaffold_elevations_enum"), default=Scaffold_Elevations.FRONT)
     height = Column(Integer)
     width = Column(Integer)

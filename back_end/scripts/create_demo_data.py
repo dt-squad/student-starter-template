@@ -318,25 +318,8 @@ def main(db, number_of_jobs=1000):
             complaint_number = f"RBK-COMP-{secrets.token_urlsafe(6)}",
             stage = random.choice(ComplaintStages)
         )
-        db.add()
+        db.add(new_complaint_record)
         db.commit()
-
-
-        Scaffold_Elevations(
-
-        )
-        db.add()
-        db.commit()
-
-
-        Scaffold_Media(
-
-        )
-        db.add()
-        db.commit()
-
-
-
     
 if __name__ == "__main__":
     NUMBER_OF_JOBS = 1000
