@@ -31,8 +31,11 @@ class Read_Job_Request(BaseModel):
 
 @router.post("/read")
 def read_job(request:Read_Job_Request):
-    job = Job_Service.read_job(request.id)
-    return job
+    if request.id:
+        job = Job_Service.read_job(request.id)
+        return job
+    else:
+        return "Job not found."
 
 
 class Read_Job_All_Request(BaseModel):

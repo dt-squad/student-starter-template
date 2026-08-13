@@ -7,6 +7,7 @@ export class Job_Service{
             postcode: "",
             complaint_id: ""
         }
+        this.jobs=[]
         
     }
 
@@ -52,7 +53,8 @@ export class Job_Service{
                 body: JSON.stringify({})
             }
         );
-        return await response.json();
+        this.jobs = await response.json();
+        return this.jobs
     }
 
     async delete_job(jobId){
@@ -75,7 +77,6 @@ export class Job_Service{
             ? rawComplaintId.trim()
             : null;
 
-        // Pass individual properties to build a flat JSON object
         const payload = {
             id: editForm.id, // Must be the string UUID only
             job_number: editForm.job_number,
@@ -96,6 +97,28 @@ export class Job_Service{
             const errorData = await response.json();
             console.error("Update failed:", errorData);
             throw new Error("Failed to update job");
+        }
+
+        return await response.json();
+    }
+
+    async read_all_complaints() {
+        const response = await fetch(
+            `${this.domain_origin}/api/complaints/read_all`,
+            {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    id: null,
+                    complaint_number: null,
+                    stage: null
+                })
+            }
+        );
+
+        if (!response.ok) {
+            console.error("Failed to fetch complaints:", response.statusText);
+            return []; // Return empty array so Vue doesn't crash
         }
 
         return await response.json();

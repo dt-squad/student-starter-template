@@ -35,11 +35,15 @@ def read_complaint(request:Read_Complaint_Request):
 
     #         return complaints
 
-@router.post("/complaint/read_all")
-def read_complaint_all(request):
-    complaint = Complaint_Service.read_complaint_all(request)
-    return complaint
+class Read_Complaint_All_Request(BaseModel):
+    id: Optional[UUID] = None
+    complaint_number: Optional[str] = None
+    stage: Optional[str] = None
 
+@router.post("/read_all")
+def read_complaint_all(request:Read_Complaint_All_Request):
+    complaint = complaint_service_instance.read_complaint_all(request)
+    return complaint
 
 class Update_Complaint_Request(BaseModel):
     id: str

@@ -21,9 +21,9 @@ class Complaint_Service:
             complaint = db.query(Complaint).get(complaint_id)
             return complaint
         
-    def read_complaint_all (self):
+    def read_complaint_all(self, complaint_id=None, complaint_number=None, stage=None):
         with get_db_context() as db:
-            complaints = db.query(Complaint)
+            complaints = db.query(Complaint).all()
 
             return complaints
         
