@@ -28,35 +28,42 @@ class Job_Service:
             jobs = db.query(Job)
             if job_number:
                 jobs = jobs.filter(Job.job_number == job_number)
-            
             if address:
                 jobs = jobs.filter(Job.address == address)
-
             if postcode:
                 jobs = jobs.filter(Job.postcode == postcode)
-
             if complaint_id:
                 jobs = jobs.filter(Job.complaint_id == complaint_id)
 
-            return jobs.all()
+            return [
+                {
+                    "id": str(job.id),
+                    "job_number": job.job_number,
+                    "address": job.address,
+                    "postcode": job.postcode,
+                    "complaint_id": str(job.complaint_id) if job.complaint_id else None,
+                }
+                for job in jobs.all()
+            ]
             
 
     def update_job(self, id, job_number=None, address=None, postcode=None, complaint_id=None):
         with get_db_context() as db:
             job = db.query(Job).get(id)
+            if id:
+                if job_number:
+                    job.job_number = job_number
 
-            if job_number:
-                job.job_number = job_number
+                if address:
+                    job.address = address
 
-            if address:
-                job.address = address
+                if postcode:
+                    job.postcode = postcode
 
-            if postcode:
-                job.postcode = postcode
-
-            if complaint_id:
-                job.complaint_id = complaint_id
-
+                if complaint_id:
+                    job.complaint_id = complaint_id
+            else:
+                return "no ID"
             db.commit()
             return True
 
