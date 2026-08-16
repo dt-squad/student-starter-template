@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2>Manage Jobs</h2>
+    <h2 class="m-4">Manage Jobs</h2>
 
     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#newJobModel">
       Add New Job
@@ -40,7 +40,7 @@
             <td>{{ job.job_number }}</td>
             <td>{{ job.address }}</td>
             <td>{{ job.postcode }}</td>
-            <td>{{ job.complaint_id }}</td>
+            <td>{{ getComplaintNumber(job.complaint_id) }}</td>
             <td>
               <button type="button" @click="startEdit(job)">Edit</button>
               <button type="button" @click="handleDeleteJob(job.id)">Delete</button>
@@ -154,7 +154,13 @@ export default {
       await this.job_service.update_job(this.editForm);
       this.cancelEdit();
       await this.fetchJobs();
-    }
+    },
+    getComplaintNumber(complaintId) {
+      if (!complaintId) return '-- None --';
+      const complaint = this.complaints.find(c => c.id === complaintId);
+      return complaint ? (complaint.complaint_number || complaint.id) : '-- None --';
+    },
+
   }
 }
 </script>
