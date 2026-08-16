@@ -12,38 +12,38 @@
           <th scope="col">Job Number</th>
           <th scope="col">Address</th>
           <th scope="col">Postcode</th>
-          <th scope="col">Complaint ID</th>
+          <th scope="col">Complaint</th>
           <th scope="col">Actions</th>
         </tr>
       </thead>
       <tbody>
         <tr v-for="job in job_service.jobs" :key="job.id">
           <template v-if="editingJobId === job.id">
-            <th scope="row"><input type="text" v-model="editForm.job_number" /></th>
-            <td><input type="text" v-model="editForm.address" /></td>
-            <td><input type="text" v-model="editForm.postcode" /></td>
-            <td>
-              <select v-model="editForm.complaint_id">
+            <th class="col-2 table-light" scope="row"><input class="form-control" type="text" v-model="editForm.job_number" /></th>
+            <td class="col-2 table-light"><input class="form-control" type="text" v-model="editForm.address" /></td>
+            <td class="col-2 table-light"><input class="form-control" type="text" v-model="editForm.postcode" /></td>
+            <td class="col-2 table-light">
+              <select class="form-control" v-model="editForm.complaint_id">
                 <option :value="null">-- None --</option>
                 <option v-for="complaint in complaints" :key="complaint.id" :value="complaint.id">
                   {{ complaint.complaint_number || complaint.id }}
                 </option>
               </select>
             </td>
-            <td>
-              <button type="button" @click="handleSaveUpdate">Save</button>
-              <button type="button" @click="cancelEdit">Cancel</button>
+            <td class="table-light">
+              <button class="btn btn-success py-1 px-2 mx-2" type="button" @click="handleSaveUpdate">Save</button>
+              <button class="btn btn-danger py-1 px-2 mx-2" type="button" @click="cancelEdit">Cancel</button>
             </td>
           </template>
 
           <template v-else>
-            <td>{{ job.job_number }}</td>
-            <td>{{ job.address }}</td>
-            <td>{{ job.postcode }}</td>
-            <td>{{ getComplaintNumber(job.complaint_id) }}</td>
-            <td>
-              <button type="button" @click="startEdit(job)">Edit</button>
-              <button type="button" @click="handleDeleteJob(job.id)">Delete</button>
+            <td >{{ job.job_number }}</td>
+            <td >{{ job.address }}</td>
+            <td >{{ job.postcode }}</td>
+            <td >{{ getComplaintNumber(job.complaint_id) }}</td>
+            <td >
+              <button class="btn btn-warning py-1 px-2 mx-2" type="button" @click="startEdit(job)">Edit</button>
+              <button class="btn btn-danger py-1 px-2 mx-2" type="button" @click="handleDeleteJob(job.id)">Delete</button>
             </td>
           </template>
         </tr>
