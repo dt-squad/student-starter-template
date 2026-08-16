@@ -2,45 +2,24 @@
   <div>
     <h2>Manage Jobs</h2>
 
-    <div class="row mb-3">
-      <div class="col-3">
-        <label for="job_number">Job Number</label>
-        <input id="job_number" type="text" name="job_number" v-model="job_service.new_job.job_number" />
-      </div>
-      <div class="col-3">
-        <label for="address">Address</label>
-        <input type="text" name="address" v-model="job_service.new_job.address" />
-      </div>
-      <div class="col-3">
-        <label for="postcode">Postcode</label>
-        <input type="text" name="postcode" v-model="job_service.new_job.postcode" />
-      </div>
-      <div class="col-3">
-        <label for="complaint_id">Complaint</label>
-        <select id="complaint_id" v-model="job_service.new_job.complaint_id">
-          <option :value="null">-- None --</option>
-          <option v-for="complaint in complaints" :key="complaint.id" :value="complaint.id">
-            {{ complaint.complaint_number || complaint.id }}
-          </option>
-        </select>
-      </div>
-      <button type="button" @click="handleCreateJob">Create Job</button>
-    </div>
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#newJobModel">
+      Add New Job
+    </button>
 
-    <table border="1" style="margin-top: 20px; width: 100%;">
+    <table class="table" border="1" style="margin-top: 20px; width: 100%;">
       <thead>
         <tr>
-          <th>Job Number</th>
-          <th>Address</th>
-          <th>Postcode</th>
-          <th>Complaint ID</th>
-          <th>Actions</th>
+          <th scope="col">Job Number</th>
+          <th scope="col">Address</th>
+          <th scope="col">Postcode</th>
+          <th scope="col">Complaint ID</th>
+          <th scope="col">Actions</th>
         </tr>
       </thead>
       <tbody>
         <tr v-for="job in job_service.jobs" :key="job.id">
           <template v-if="editingJobId === job.id">
-            <td><input type="text" v-model="editForm.job_number" /></td>
+            <th scope="row"><input type="text" v-model="editForm.job_number" /></th>
             <td><input type="text" v-model="editForm.address" /></td>
             <td><input type="text" v-model="editForm.postcode" /></td>
             <td>
@@ -76,6 +55,49 @@
       </tbody>
     </table>
   </div>
+
+<!-- Model for adding a job -->
+<div class="modal" id="newJobModel" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Add New Job</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body col-12 mb-2">
+        <div class="row">
+          <div class="col-6">
+            <label for="job_number">Job Number</label>
+            <input id="job_number" type="text" name="job_number" v-model="job_service.new_job.job_number" />
+          </div>
+          <div class="col-6">
+            <label for="complaint_id">Complaint</label>
+            <select id="complaint_id" v-model="job_service.new_job.complaint_id">
+              <option :value="null">-- None --</option>
+              <option v-for="complaint in complaints" :key="complaint.id" :value="complaint.id">
+                {{ complaint.complaint_number || complaint.id }}
+              </option>
+            </select>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-6">
+            <label for="address">Address</label>
+            <input type="text" name="address" v-model="job_service.new_job.address" />
+          </div>
+          <div class="col-6">
+            <label for="postcode">Postcode</label>
+            <input type="text" name="postcode" v-model="job_service.new_job.postcode" />
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button class="btn btn-primary" type="button" @click="handleCreateJob">Create Job</button>
+      </div>
+    </div>
+  </div>
+</div>
 </template>
 
 <script>
