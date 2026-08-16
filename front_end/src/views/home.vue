@@ -1,5 +1,5 @@
 <template>
-    <h1> Welcome to Job Tracker </h1>
+    <h1 class="m-4"> Welcome to Job Tracker </h1>
     <div class="row d-flex justify-content-evenly mb-2">
         <div class="card col-6" style="width: 18rem;">
             <div class="card-body">
@@ -7,7 +7,7 @@
                 <p class="card-text">View existing jobs, raise new jobs or edit and delete old jobs</p>
             </div>
             <div class="card-footer">    
-                <button class="btn btn-success" type="button" @click="$router.push('/manage_jobs')">Jobs</button>
+                <button class="btn btn-success" type="button" @click="$router.push('/manage_jobs')">Go to Jobs</button>
             </div>
         </div>
         <div class="card col-6" style="width: 18rem;">
@@ -16,7 +16,7 @@
                 <p class="card-text">View a list of complaints, all complaint jobs, add new complaints or update existing ones.</p>
             </div>
             <div class="card-footer">    
-                <button class="btn btn-success" type="button"  aria-disabled="true">Complaints</button>
+                <button class="btn btn-success" type="button"  aria-disabled="true">Go to Complaints</button>
             </div>
         </div>
     </div>
@@ -28,7 +28,7 @@
                 <p class="card-text">Live tracker of all erected scaffolds, on going scaffold requests and a record of past erections.</p>
             </div>
             <div class="card-footer">    
-                <button class="btn btn-success" type="button" aria-disabled="true">Scaffold</button>
+                <button class="btn btn-success" type="button" aria-disabled="true">Go to Scaffold Requests</button>
             </div>
         </div>
         <div class="card col-6" style="width: 18rem;">
@@ -37,7 +37,7 @@
                 <p class="card-text">View contact details of resources, jobs assigned to them and KPIs.</p>
             </div>
             <div class="card-footer">
-                <button class="btn btn-success" type="button"  aria-disabled="true">Resources</button>
+                <button class="btn btn-success" type="button"  aria-disabled="true">Go to Resources</button>
             </div>
         </div>        
     </div>
@@ -56,7 +56,7 @@ export default{
 }
 </script>
 
-<style>
+<style scoped>
 .card-footer{
     background-color: unset;
 }
