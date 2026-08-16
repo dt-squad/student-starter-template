@@ -17,13 +17,16 @@ class Create_Job_Request(BaseModel):
 
 @router.post("/create")
 def create_job(request: Create_Job_Request):
-    job = job_service_instance.create_job(
-        job_number=request.job_number,
-        address=request.address,
-        postcode=request.postcode,
-        complaint_id=request.complaint_id
-    )
-    return job
+    try:
+        job = job_service_instance.create_job(
+            job_number=request.job_number,
+            address=request.address,
+            postcode=request.postcode,
+            complaint_id=request.complaint_id
+        )
+        return dict(job=job, message="Job Created Successfully", rc=0)
+    except:
+        return dict(message="Job creation failed", rc=16)
 
 
 class Read_Job_Request(BaseModel):
