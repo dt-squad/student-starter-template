@@ -93,7 +93,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button class="btn btn-primary" type="button" @click="handleCreateJob">Create Job</button>
+        <button class="btn btn-primary" type="button" data-bs-dismiss="modal" @click="handleCreateJob">Create Job</button>
       </div>
     </div>
   </div>

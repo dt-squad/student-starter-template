@@ -1,14 +1,14 @@
-export class Job_Service{
-    constructor(domain_origin) {
-        this.domain_origin = "http://localhost:8003"
+export class Job_Service {
+    constructor(domain_origin, notifyCallback = null) {
+        this.domain_origin = domain_origin || "http://localhost:8003";
+        this.notify = notifyCallback;
         this.new_job = {
             job_number: "",
             address: "",
             postcode: "",
             complaint_id: ""
-        }
-        this.jobs=[]
-        
+        };
+        this.jobs = [];
     }
 
     async create_job() {
@@ -22,53 +22,39 @@ export class Job_Service{
             complaint_id: validComplaintId
         };
 
-        const response = await fetch(
-            `${this.domain_origin}/api/jobs/create`,
-            {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(payload)
-            }
-        );
+        const response = await fetch(`${this.domain_origin}/api/jobs/create`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        });
 
-        if (!response.ok) {
-            const errorData = await response.json();
-            console.error("Validation error:", errorData);
-            throw new Error("Failed to create job");
-        }
-
-        return await response.json();
+        const res = await response.json();
+        if (this.notify) this.notify(res);
+        return res;
     }
 
     async read_all_jobs() {
-        const response = await fetch(
-            `${this.domain_origin}/api/jobs/read_all`,
-            {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({})
-            }
-        );
-        this.jobs = await response.json();
-        return this.jobs
+        const response = await fetch(`${this.domain_origin}/api/jobs/read_all`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({})
+        });
+
+        const res = await response.json();
+        this.jobs = res.jobs || [];
+        return this.jobs;
     }
 
-    async delete_job(jobId){
-        const response = await fetch(
-            `${this.domain_origin}/api/jobs/delete`,
-            {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({id: jobId})
-            }
-        );
-        return await response.json();
+    async delete_job(jobId) {
+        const response = await fetch(`${this.domain_origin}/api/jobs/delete`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ id: jobId })
+        });
+
+        const res = await response.json();
+        if (this.notify) this.notify(res);
+        return res;
     }
 
     async update_job(editForm) {
@@ -78,7 +64,7 @@ export class Job_Service{
             : null;
 
         const payload = {
-            id: editForm.id, // Must be the string UUID only
+            id: editForm.id,
             job_number: editForm.job_number,
             address: editForm.address,
             postcode: editForm.postcode,
@@ -87,40 +73,27 @@ export class Job_Service{
 
         const response = await fetch(`${this.domain_origin}/api/jobs/update`, {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(payload)
         });
 
-        if (!response.ok) {
-            const errorData = await response.json();
-            console.error("Update failed:", errorData);
-            throw new Error("Failed to update job");
-        }
-
-        return await response.json();
+        const res = await response.json();
+        if (this.notify) this.notify(res);
+        return res;
     }
 
     async read_all_complaints() {
-        const response = await fetch(
-            `${this.domain_origin}/api/complaints/read_all`,
-            {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    id: null,
-                    complaint_number: null,
-                    stage: null
-                })
-            }
-        );
+        const response = await fetch(`${this.domain_origin}/api/complaints/read_all`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                id: null,
+                complaint_number: null,
+                stage: null
+            })
+        });
 
-        if (!response.ok) {
-            console.error("Failed to fetch complaints:", response.statusText);
-            return []; // Return empty array so Vue doesn't crash
-        }
-
-        return await response.json();
+        const res = await response.json();
+        return res.complaints || res;
     }
 }
