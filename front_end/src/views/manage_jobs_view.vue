@@ -2,7 +2,7 @@
   <div>
     <h2 class="m-4">Manage Jobs</h2>
 
-    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#newJobModel">
+    <button type="button" class="shadow btn btn-primary" data-bs-toggle="modal" data-bs-target="#newJobModel">
       Add New Job
     </button>
 
@@ -12,35 +12,40 @@
           <th scope="col">Job Number</th>
           <th scope="col">Address</th>
           <th scope="col">Postcode</th>
-          <th scope="col">Complaint</th>
           <th scope="col">Actions</th>
         </tr>
       </thead>
       <tbody>
-        <tr v-for="job in job_service.jobs" :key="job.id">
+        <tr v-for="job in job_service.jobs" :key="job.id" class="align-middle">
           <template v-if="editingJobId === job.id">
-            <th class="col-2 table-light" scope="row"><input class="form-control" type="text" v-model="editForm.job_number" /></th>
-            <td class="col-2 table-light"><input class="form-control" type="text" v-model="editForm.address" /></td>
-            <td class="col-2 table-light"><input class="form-control" type="text" v-model="editForm.postcode" /></td>
-            <td class="col-2 table-light">
+            <th class="col-2 table-light" scope="row">
+              <input class="form-control mb-2" type="text" v-model="editForm.job_number" />
               <select class="form-control" v-model="editForm.complaint_id">
                 <option :value="null">-- None --</option>
                 <option v-for="complaint in complaints" :key="complaint.id" :value="complaint.id">
                   {{ complaint.complaint_number || complaint.id }}
                 </option>
               </select>
+            </th>
+            <td class="col-2 table-light">
+              <input class="form-control" type="text" v-model="editForm.address" />
             </td>
-            <td class="table-light">
+            <td class="col-2 table-light">
+              <input class="form-control" type="text" v-model="editForm.postcode" />
+            </td>
+            <td class="col-2 table-light">
               <button class="btn btn-success py-1 px-2 mx-2" type="button" @click="handleSaveUpdate">Save</button>
               <button class="btn btn-danger py-1 px-2 mx-2" type="button" @click="cancelEdit">Cancel</button>
             </td>
           </template>
 
           <template v-else>
-            <td >{{ job.job_number }}</td>
+            <td>
+              <div class="fw-semibold">{{ job.job_number }}</div>
+              <small class="text-muted d-block">{{ getComplaintNumber(job.complaint_id) }}</small>
+            </td>
             <td >{{ job.address }}</td>
             <td >{{ job.postcode }}</td>
-            <td >{{ getComplaintNumber(job.complaint_id) }}</td>
             <td >
               <button class="btn btn-warning py-1 px-2 mx-2" type="button" @click="startEdit(job)">Edit</button>
               <button class="btn btn-danger py-1 px-2 mx-2" type="button" @click="handleDeleteJob(job.id)">Delete</button>
