@@ -16,7 +16,7 @@
                 <p class="card-text">View a list of complaints, all complaint jobs, add new complaints or update existing ones.</p>
             </div>
             <div class="card-footer">    
-                <button class="btn btn-success" type="button"  aria-disabled="true">Go to Complaints</button>
+                <button class="btn btn-success" type="button"  aria-disabled="true" disabled>Go to Complaints</button>
             </div>
         </div>
     </div>
@@ -28,7 +28,7 @@
                 <p class="card-text">Live tracker of all erected scaffolds, on going scaffold requests and a record of past erections.</p>
             </div>
             <div class="card-footer">    
-                <button class="btn btn-success" type="button" aria-disabled="true">Go to Scaffold Requests</button>
+                <button class="btn btn-success" type="button" aria-disabled="true" disabled>Go to Scaffold Requests</button>
             </div>
         </div>
         <div class="card col-6 shadow" style="width: 18rem;">
@@ -37,7 +37,7 @@
                 <p class="card-text">View contact details of resources, jobs assigned to them and KPIs.</p>
             </div>
             <div class="card-footer">
-                <button class="btn btn-success" type="button"  aria-disabled="true">Go to Resources</button>
+                <button class="btn btn-success" type="button"  aria-disabled="true" disabled>Go to Resources</button>
             </div>
         </div>        
     </div>
@@ -45,6 +45,7 @@
 </template>
 
 <script>
+import { onMounted } from 'vue';
 import Greeting from '../components/Greeting.vue';
 
 export default{
@@ -52,8 +53,12 @@ export default{
     components: {
         Greeting,
     },
+    async mounted(){
+        document.title = 'Job Tracker';
+    }
     
 }
+
 </script>
 
 <style scoped>

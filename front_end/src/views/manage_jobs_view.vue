@@ -1,11 +1,16 @@
 <template>
   <div>
-    <h2 class="m-4">Manage Jobs</h2>
-
-    <button type="button" class="shadow btn btn-primary" data-bs-toggle="modal" data-bs-target="#newJobModel">
-      Add New Job
-    </button>
-
+    <div class="row p-2">
+      <div class="ms-2 col-9 d-flex justify-content-start">
+        <button type="button" class="btn me-3" @click="$router.push('/')"><i class="fa-solid fa-arrow-left"></i></button>
+        <h1>Jobs</h1>
+      </div>
+      <div class="align-self-end col-2 align-middle">
+        <button type="button" class="shadow btn btn-primary" data-bs-toggle="modal" data-bs-target="#newJobModel">
+          Add New Job
+        </button>
+      </div>
+    </div>
     <table class="table" border="1" style="margin-top: 20px; width: 100%;">
       <thead>
         <tr>
@@ -123,6 +128,7 @@ export default {
     };
   },
   async mounted() {
+    document.title = 'Jobs';
     await this.fetchJobs();
     await this.fetchComplaints();
   },
